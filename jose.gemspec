@@ -5,7 +5,7 @@ require 'jose/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "jose"
-  spec.version       = Jose::VERSION
+  spec.version       = SyrupPay::Jose::VERSION
   spec.authors       = ["byeongchan"]
   spec.email         = ["byeongchan.park@sk.com"]
 
@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "aes_key_wrap", "~> 1.0.1"
 end
