@@ -1,12 +1,15 @@
 require 'jose/jwa/enc/content_encryption'
 require 'openssl'
 require 'bindata'
-require 'active_support/all'
+require 'active_support/security_utils'
+require 'url_safe_base64'
 
 module SyrupPay
   module Jwa
     class A128CbcHmac256Encryption < ContentEncryption
       class InvalidVerifyError < StandardError; end
+
+      include ActiveSupport::SecurityUtils
 
       def initialize
         super 32, 16
@@ -52,8 +55,8 @@ module SyrupPay
       end
 
       def verify_authentication_tag!(key, iv, cipher_text, aad, expected)
-        actual = Base64.urlsafe_encode64(sign(key, iv, cipher_text, aad))
-        raise InvalidVerifyError, 'not match'+actual unless ActiveSupport::SecurityUtils.secure_compare(actual, expected)
+        actual = UrlSafeBase64.encode64(sign(key, iv, cipher_text, aad))
+        raise InvalidVerifyError, "expected : #{expected}, actual : #{actual}" unless secure_compare(actual, expected)
       end
 
       def split_key(cek)

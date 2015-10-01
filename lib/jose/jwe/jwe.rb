@@ -30,13 +30,19 @@ module SyrupPay
         else nil
       end
     end
+
+    def json_to_hash(json)
+      ActiveSupport::JSON.decode(json).with_indifferent_access
+    end
   end
 
   class JweSerializer
     class UnSupportHeaderError < StandardError; end
+    class InvalidJweFormatError < StandardError; end
 
     include SyrupPay::JweSupportAlgorithm
-    attr_reader :header, :key, :payload
+    attr_accessor :header
+    attr_reader :key, :payload
     attr_writer :cek, :iv
 
     def initialize(key)
@@ -63,8 +69,18 @@ module SyrupPay
       end.join('.')
     end
 
-    def compactDeserialize(key)
+    def compactDeserialize(serialized_input)
+      validate_deserialize! serialized_input
+      header_json, wrapped_key, @iv, cipher_text, at = split_deserialize serialized_input
+      @header = json_to_hash(header_json)
 
+      jwe_alg = keywrap_algorithm? @header[:alg].try(:to_sym)
+      jwe_enc = encryption_algorithm? @header[:enc].try(:to_sym)
+
+      @cek = jwe_alg.decryption(@key, wrapped_key)
+
+      aad = additional_authenticated_data
+      jwe_enc.verify_and_decrypt(@cek, @iv, cipher_text, aad, UrlSafeBase64.encode64(at))
     end
 
     private
@@ -76,6 +92,16 @@ module SyrupPay
     def validate_header!
       raise UnSupportHeaderError, (header[:alg].presence||'alg(nil)')+' is not supported' unless alg?(header[:alg].try(:to_sym))
       raise UnSupportHeaderError, (header[:enc].presence||'enc(nil)')+' is not supported' unless enc?(header[:enc].try(:to_sym))
+    end
+
+    def validate_deserialize!(src)
+      raise InvalidJweFormatError, 'JWE format must be 5 parts' unless src.count('.') == 4
+    end
+
+    def split_deserialize(src)
+      src.split('.').collect do |parts|
+        UrlSafeBase64.decode64(parts)
+      end
     end
   end
 end
