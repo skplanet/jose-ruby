@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'jose/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "jose"
+  spec.name          = "SyrupPayJose"
   spec.version       = SyrupPay::Jose::VERSION
   spec.authors       = ["byeongchan"]
   spec.email         = ["byeongchan.park@sk.com"]
@@ -29,5 +29,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "aes_key_wrap", "~> 1.0.1"
+  spec.add_runtime_dependency  "aes_key_wrap"
+  spec.add_runtime_dependency  "bindata"
+  spec.add_runtime_dependency  "activesupport"
+  spec.add_runtime_dependency  "url_safe_base64"
 end

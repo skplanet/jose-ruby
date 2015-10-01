@@ -1,24 +1,35 @@
 require 'aes_key_wrap'
-require 'base64'
+require 'active_support/all'
+require 'jose/jwa/enc/content_encryptionkey_generator'
 
 module SyrupPay
   module Jwa
-    class InvalidKeyLengthError < StandardError; end
     class AesKeyWrap
-      def initialize(size)
-        @size = size
+      class InvalidKeyLengthError < StandardError; end
+
+      def initialize(length)
+        @length = length
       end
 
       def encryption(key, cek)
-        valid_key_length!(key, @size)
+        valid_key_length!(key, @length)
+
+        if cek.instance_of? SyrupPay::Jwa::ContentEncryptionKeyGenerator
+          kek = cek.generate_random_key
+        elsif cek.is_a? String
+          kek = cek
+        end
+
         key_binary = str_to_binary(key)
-        cek_binary = str_to_binary(cek)
-        AESKeyWrap.wrap(cek_binary, key_binary)
+        cek_binary = str_to_binary(kek)
+
+        wrapped_key = AESKeyWrap.wrap(cek_binary, key_binary)
+        [kek, wrapped_key]
       end
 
-      def decryption(key, wrapCek)
+      def decryption(key, wrapped_cek)
         key_binary = str_to_binary(key)
-        AESKeyWrap.unwrap(wrapCek, key_binary)
+        AESKeyWrap.unwrap(wrapped_cek, key_binary)
       end
 
       private
@@ -26,8 +37,12 @@ module SyrupPay
         str.unpack('H*').pack('H*')
       end
 
-      def valid_key_length!(key, size)
-        fail(InvalidKeyLengthError, 'JWE key must be '+size.to_s+' bytes. Yours key '+key.bytesize.to_s+' bytes.') if size != key.bytesize
+      def valid_key_length!(key, length)
+        actual_key_len = key.blank? ? 0 : key.try(:bytesize)
+        expected_key_len = length
+        if expected_key_len != actual_key_len
+          raise InvalidKeyLengthError, 'JWE key must be '+expected_key_len.to_s+' bytes. Yours key '+actual_key_len.to_s+' bytes.'
+        end
       end
     end
 
@@ -44,74 +59,3 @@ module SyrupPay
     end
   end
 end
-
-# aesKeyWrap = SyrupPay::Jwa::AesKeyWrap.new(32)
-# enc = aesKeyWrap.encryption('1234567890123456123456789012345612345678901234561234567890123456', '9876543210987654987654321098765498765432109876549876543210987654')
-# puts Base64.encode64(enc)
-# src = aesKeyWrap.decryption('12345678901234561234567890123456', enc)
-# puts src
-
-aesKeyWrap = SyrupPay::Jwa::A128Kw.new
-enc = aesKeyWrap.encryption('1234567890123456', '9876543210987654')
-puts Base64.encode64(enc)
-src = aesKeyWrap.decryption('1234567890123456', enc)
-puts src
-
-aesKeyWrap = SyrupPay::Jwa::A256Kw.new
-enc = aesKeyWrap.encryption('12345678901234561234567890123456', '98765432109876549876543210987654')
-puts Base64.encode64(enc)
-src = aesKeyWrap.decryption('12345678901234561234567890123456', enc)
-puts src
-
-
-  #
-  #   class Aes256keyWrap
-  #     KEY_BYTES_LENGTH = 32
-  #
-  #     include SyrupPay::Jwa::AesKeyWrap
-  #
-  #     class << self
-  #       def encryption(key, cek)
-  #         AesKeyWrap.aes_key_wrap(key, cek, KEY_BYTES_LENGTH)
-  #       end
-  #
-  #       def decryption(key, wrapCek)
-  #         AesKeyWrap.aes_key_unwrap(key, wrapCek)
-  #       end
-  #     end
-  #   end
-  #
-  #   class Aes128KeyWrap
-  #     KEY_BYTES_LENGTH = 16
-  #
-  #     include SyrupPay::Jwa::AesKeyWrap
-  #
-  #     class << self
-  #       def encryption(key, cek)
-  #         AesKeyWrap.aes_key_wrap(key, cek, KEY_BYTES_LENGTH)
-  #       end
-  #
-  #       def decryption(key, wrapCek)
-  #         AesKeyWrap.aes_key_unwrap(key, wrapCek)
-  #       end
-  #     end
-  #   end
-  # end
-# end
-#
-# wrapped_key = SyrupPay::Jwa::A128KW.encryption("1234567890123456", "9876543210987654")
-#
-# puts Base64.encode64(wrapped_key)
-#
-# src = SyrupPay::Jwa::A128KW.decryption("1234567890123456", wrapped_key)
-#
-# puts src
-#
-#
-# wrapped_key = SyrupPay::Jwa::A256KW.encryption("12345678901234561234567890123456", "98765432109876549876543210987654")
-#
-# puts Base64.encode64(wrapped_key)
-#
-# src = SyrupPay::Jwa::A256KW.decryption("12345678901234561234567890123456", wrapped_key)
-#
-# puts src
