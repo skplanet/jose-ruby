@@ -39,15 +39,15 @@ module SyrupPay
     attr_reader :header, :key, :payload
     attr_writer :cek, :iv
 
-    def initialize(header = {}, key)
-      @header = header
+    def initialize(key)
       @key = key
-
-      validate_header!
     end
 
-    def compactSerialize(payload)
+    def compactSerialize(header = {}, payload)
       @payload = payload
+      @header = header
+
+      validate_header!
 
       jwe_alg = keywrap_algorithm? header[:alg].try(:to_sym)
       jwe_enc = encryption_algorithm? header[:enc].try(:to_sym)

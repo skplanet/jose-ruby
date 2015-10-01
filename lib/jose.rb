@@ -6,8 +6,8 @@ module SyrupPay
     module_function
 
     def compactSeriaization(header = {}, key, payload)
-      jwe = SyrupPay::JweSerializer.new(header, key)
-      jwe.compactSerialize(payload)
+      jwe = SyrupPay::JweSerializer.new(key)
+      jwe.compactSerialize(header, payload)
     end
 
     def compactDeserialization(src, key)
