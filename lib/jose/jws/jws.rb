@@ -36,14 +36,14 @@ module SyrupPay
 
     def compactSerialize(header = {}, claims)
       @claims = claims
-      @header = header
+      @header = header.with_indifferent_access
 
       validate_header!
 
-      jws_alg = signature_algorithm? header[:alg].try(:to_sym)
+      jws_alg = signature_algorithm? @header[:alg].try(:to_sym)
       sign_value = jws_alg.sign(@key, hmac_data)
 
-      [header.to_json, claims, sign_value].collect { |parts| UrlSafeBase64.encode64(parts)}.join('.')
+      [@header.to_json, claims, sign_value].collect { |parts| UrlSafeBase64.encode64(parts)}.join('.')
     end
 
     def compactDeserialize(serialized_input)

@@ -51,12 +51,12 @@ module SyrupPay
 
     def compactSerialize(header = {}, payload)
       @payload = payload
-      @header = header
+      @header = header.with_indifferent_access
 
       validate_header!
 
-      jwe_alg = keywrap_algorithm? header[:alg].try(:to_sym)
-      jwe_enc = encryption_algorithm? header[:enc].try(:to_sym)
+      jwe_alg = keywrap_algorithm? @header[:alg].try(:to_sym)
+      jwe_enc = encryption_algorithm? @header[:enc].try(:to_sym)
 
       cek_generator = jwe_enc.content_encryption_generator
       @cek, wrapped_key = jwe_alg.encryption(@key, cek_generator)
@@ -64,7 +64,7 @@ module SyrupPay
       aad = additional_authenticated_data
       cipher_text, at, @iv = jwe_enc.encrypt_and_sign(@cek, @iv, @payload, aad)
 
-      [header.to_json, wrapped_key, @iv, cipher_text, at].collect do |parts|
+      [@header.to_json, wrapped_key, @iv, cipher_text, at].collect do |parts|
         UrlSafeBase64.encode64(parts)
       end.join('.')
     end
