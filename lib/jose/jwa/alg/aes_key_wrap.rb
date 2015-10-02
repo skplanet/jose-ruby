@@ -41,7 +41,7 @@ module SyrupPay
         actual_key_len = key.blank? ? 0 : key.try(:bytesize)
         expected_key_len = length
         if expected_key_len != actual_key_len
-          raise InvalidKeyLengthError, 'JWE key must be '+expected_key_len.to_s+' bytes. Yours key '+actual_key_len.to_s+' bytes.'
+          raise InvalidKeyLengthError, "JWE key must be #{expected_key_len} bytes. Yours key #{actual_key_len} bytes."
         end
       end
     end
