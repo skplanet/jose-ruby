@@ -26,7 +26,7 @@ key = '1234567890123456'
 # alg : key wrap encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
 # enc : content encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
 # kid : SyrupPay가 발급하는 iss
-header = {'alg':'A128KW', 'enc':'A128CBC-HS256', 'kid':'syruppay_sample'}
+header = {'alg'=>'A128KW', 'enc'=>'A128CBC-HS256', 'kid'=>'syruppay_sample'}
 # 암호화 할 데이터
 payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}'
 
@@ -48,7 +48,7 @@ key = '12345678901234561234567890123456'
 # JWS header 규격
 # alg : signature algorithm. 아래 Supported JOSE encryption algorithms 참조
 # kid : SyrupPay가 발급하는 iss
-header = {'alg':'HS256', 'kid':'syruppay_sample'}
+header = {'alg'=>'HS256', 'kid'=>'syruppay_sample'}
 # sign 할 데이터
 claims = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}' # 
 
