@@ -1,39 +1,81 @@
-# Jose
+# JOSE for SyrupPay
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/jose`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby로 구현한 JOSE(Javascript Object Signing and Encryption) - RFC 7516, RFC 7515 규격입니다. 
+JOSE 규격은 SyrupPay 결제 데이터 암복호화 및 AccessToken 발행 등에 사용되며 SyrupPay 서비스의 가맹점에 배포하기 위한 목적으로 라이브러리가 구현되었습니다.
 
-TODO: Delete this and the text above, and describe your gem
+## Ruby version
+Ruby 2.2.3
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
 ```ruby
-gem 'jose'
+$ gem install syruppay_jose
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install jose
 
 ## Usage
 
-TODO: Write usage instructions here
+### JWE
+```ruby
+require syruppay_jose
 
-## Development
+include SyrupPay::JWE
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake false` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+# SyrupPay가 발급하는 secret
+key = '1234567890123456'
+# JWE header 규격
+# alg : key wrap encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
+# enc : content encryption algorithm. 아래 Supported JOSE encryption algorithms 참조
+# kid : SyrupPay가 발급하는 iss
+header = {'alg':'A128KW', 'enc':'A128CBC-HS256', 'kid':'syruppay_sample'}
+# 암호화 할 데이터
+payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}'
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+# encryption and serialize
+jwe_value = compactSeriaization(key, header, payload}
 
-## Contributing
+# decryption and deserialize
+actual = compactDeserialization(key, jwe_value)
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jose. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+### JWS
+```ruby
+require syruppay_jose
 
+include SyrupPay::JWS
+
+# SyrupPay가 발급하는 secret
+key = '12345678901234561234567890123456'
+# JWS header 규격
+# alg : signature algorithm. 아래 Supported JOSE encryption algorithms 참조
+# kid : SyrupPay가 발급하는 iss
+header = {'alg':'HS256', 'kid':'syruppay_sample'}
+# sign 할 데이터
+claims = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}' # 
+
+# sign and serialize
+jws_value = compactSeriaization(key, header, claims}
+
+# verify and deserialize
+actual = compactDeserialization(key, jws_value)
+```
+
+## Supported JOSE encryption algorithms
+
+### "alg" (Algorithm) Header Parameter Values For JWE
+alg Param Value|Key Management Algorithm
+------|------
+A128KW|AES Key Wrap with default initial value using 128 bit key
+A256KW|AES Key Wrap with default initial value using 256 bit key
+
+### "enc" (Encryption Algorithm) Header Parameter Values for JWE
+enc Param Value|Content Encryption Algorithm
+-------------|------
+A128CBC-HS256|AES_128_CBC_HMAC_SHA_256 authenticated encryption algorithm
+
+### "alg" (Algorithm) Header Parameter Values for JWS
+alg Param Value|Digital Signature or MAC Algorithm
+-----|-------
+HS256|HMAC using SHA-256
 
 ## License
 
