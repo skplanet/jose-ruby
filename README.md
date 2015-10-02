@@ -3,8 +3,8 @@
 Ruby로 구현한 JOSE(Javascript Object Signing and Encryption) - RFC 7516, RFC 7515 규격입니다. 
 JOSE 규격은 SyrupPay 결제 데이터 암복호화 및 AccessToken 발행 등에 사용되며 SyrupPay 서비스의 가맹점에 배포하기 위한 목적으로 라이브러리가 구현되었습니다.
 
-## Ruby version
-Ruby 2.2.3
+## Supported Ruby version
+~>= Ruby 2.0.0
 
 ## Installation
 
