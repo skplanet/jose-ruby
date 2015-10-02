@@ -4,8 +4,6 @@ require 'jose/jws/jws'
 
 module SyrupPay
   module JWE
-    module_function
-
     def compactSeriaization(key, header = {}, payload)
       jwe = SyrupPay::JweSerializer.new(key)
       jwe.compactSerialize(header, payload)
@@ -18,8 +16,6 @@ module SyrupPay
   end
 
   module JWS
-    module_function
-
     def compactSeriaization(key, header = {}, claims)
       jws = SyrupPay::Jws.new(key)
       jws.compactSerialize(header, claims)
