@@ -18,6 +18,8 @@ module SyrupPay
           kek = cek.generate_random_key
         elsif cek.is_a? String
           kek = cek
+        elsif cek.is_a? Array
+          kek = cek.pack('C*')
         end
 
         key_binary = str_to_binary(key)
