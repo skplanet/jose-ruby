@@ -1,5 +1,5 @@
 require 'rspec'
-require 'jose/jwa/enc/aes128_hmac2565_encryption'
+require 'jose/jwa/enc/aes128_hmac256_encryption'
 require 'url_safe_base64'
 
 describe SyrupPay::Jwa::A128CbcHmac256Encryption do

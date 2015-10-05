@@ -1,6 +1,6 @@
 require 'active_support/all'
 require 'jose/jwa/alg/aes_key_wrap'
-require 'jose/jwa/enc/aes128_hmac2565_encryption'
+require 'jose/jwa/enc/aes128_hmac256_encryption'
 require 'url_safe_base64'
 
 module SyrupPay
