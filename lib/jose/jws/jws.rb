@@ -21,7 +21,7 @@ module SyrupPay
     end
   end
 
-  class Jws
+  class JwsSerializer
     class UnSupportHeaderError < StandardError; end
     class InvalidJwsFormatError < StandardError; end
 

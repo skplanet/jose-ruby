@@ -17,12 +17,12 @@ module SyrupPay
 
   module JWS
     def compactSeriaization(key, header = {}, claims)
-      jws = SyrupPay::Jws.new(key)
+      jws = SyrupPay::JwsSerializer.new(key)
       jws.compactSerialize(header, claims)
     end
 
     def compactDeserialization(key, jws_value)
-      jws = SyrupPay::Jws.new(key)
+      jws = SyrupPay::JwsSerializer.new(key)
       jws.compactDeserialize jws_value
     end
   end
