@@ -16,7 +16,7 @@ $ gem install syruppay_jose
 
 ### JWE
 ```ruby
-require syruppay_jose
+require jose/syruppay_jose
 
 include SyrupPay::JWE
 
@@ -31,15 +31,15 @@ header = {'alg'=>'A128KW', 'enc'=>'A128CBC-HS256', 'kid'=>'syruppay_sample'}
 payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}'
 
 # encryption and serialize
-jwe_value = compactSeriaization(key, header, payload}
+jwe_value = compact_serialization(key, header, payload}
 
 # decryption and deserialize
-actual = compactDeserialization(key, jwe_value)
+actual = compact_deserialization(key, jwe_value)
 ```
 
 ### JWS
 ```ruby
-require syruppay_jose
+require jose/syruppay_jose
 
 include SyrupPay::JWS
 
@@ -53,10 +53,10 @@ header = {'alg'=>'HS256', 'kid'=>'syruppay_sample'}
 claims = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}' # 
 
 # sign and serialize
-jws_value = compactSeriaization(key, header, claims}
+jws_value = compact_serialization(key, header, claims}
 
 # verify and deserialize
-actual = compactDeserialization(key, jws_value)
+actual = compact_deserialization(key, jws_value)
 ```
 
 ## Supported JOSE encryption algorithms
