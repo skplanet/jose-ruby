@@ -59,6 +59,7 @@ module SyrupPay
       jwe_enc = encryption_algorithm? @header[:enc].try(:to_sym)
 
       cek_generator = jwe_enc.content_encryption_generator
+      cek_generator.user_encryption_key = @cek
       @cek, wrapped_key = jwe_alg.encryption(@key, cek_generator)
 
       aad = additional_authenticated_data
