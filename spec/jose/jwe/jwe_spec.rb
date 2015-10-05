@@ -4,7 +4,7 @@ require 'url_safe_base64'
 
 describe SyrupPay::JweSerializer do
   context 'when jwe serialize' do
-    it 'is matched with expected result' do
+    it 'matches expected result' do
       cek = [4, 211, 31, 197, 84, 157, 252, 254, 11, 100,
              157, 250, 63, 170, 106, 206, 107, 124, 212, 45,
              111, 107, 9, 219, 200, 177, 0, 240, 143, 156,
@@ -31,7 +31,7 @@ describe SyrupPay::JweSerializer do
   end
 
   context 'when jwe deserialize' do
-    it 'it matched with expected result' do
+    it 'matches expected result' do
       key = UrlSafeBase64.decode64('GawgguFyGrWKav7AX4VKUg');
       jwe_result = 'eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.AxY8DCtDaGlsbGljb3RoZQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.U0m_YmjN04DJvceFICbCVQ'
 
