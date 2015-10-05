@@ -20,6 +20,7 @@ require 'jose/jwa/alg/aes_key_wrap'
 require 'jose/jwa/alg/hmac_sha256_signature'
 require 'jose/jwa/enc/aes128_hmac256_encryption'
 require 'jose/jwe/jwe'
+require 'jose/jws/jws'
 require 'url_safe_base64'
 
 RSpec.configure do |config|
