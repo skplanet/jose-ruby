@@ -17,6 +17,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'jose/jwa/alg/aes_key_wrap'
+require 'jose/jwa/alg/hmac_sha256_signature'
 require 'jose/jwa/enc/aes128_hmac256_encryption'
 require 'jose/jwe/jwe'
 require 'url_safe_base64'

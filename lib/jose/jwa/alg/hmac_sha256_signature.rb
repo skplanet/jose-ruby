@@ -14,7 +14,7 @@ module SyrupPay
       end
 
       def sign(key, hmac_data)
-        valid_key_length!(key, @length)
+        # valid_key_length!(key, @length)
 
         OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), key, hmac_data)
       end
