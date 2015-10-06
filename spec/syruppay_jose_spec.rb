@@ -22,7 +22,7 @@ describe 'JWE' do
 
       expected = 'eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.AxY8DCtDaGlsbGljb3RoZQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.U0m_YmjN04DJvceFICbCVQ'
 
-      actual = compact_serialization_for_test(key, cek, iv, {'alg' => 'A128KW', 'enc' => 'A128CBC-HS256'}, payload)
+      actual = compact_serialization_for_test(key, cek, iv, {:alg => 'A128KW', :enc => 'A128CBC-HS256'}, payload)
       expect(actual).to eq expected
     end
   end
@@ -51,7 +51,7 @@ describe 'JWS' do
 
       expected = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLAogICAiZXhwIjoxMzAwODE5MzgwLAogICAiaHR0cDovL2V4YW1wbGUuY29tL2lzX3Jvb3QiOnRydWV9.NnnMCS7jsU-kBIm3oJIc5xEHLGzzXLX6O2wVxlslAgo"
 
-      actual = compact_serialization(key, {'typ' => 'JWT', 'alg' => 'HS256'}, claims)
+      actual = compact_serialization(key, {:typ => 'JWT', :alg => 'HS256'}, claims)
 
       expect(actual).to eq expected
     end
