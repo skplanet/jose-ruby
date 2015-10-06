@@ -1,5 +1,5 @@
 require 'rspec'
-require 'jose/syruppay_jose'
+require 'syruppay_jose'
 
 describe 'JWE' do
   include SyrupPay::JWE
