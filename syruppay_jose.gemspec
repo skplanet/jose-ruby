@@ -10,7 +10,9 @@ Gem::Specification.new do |spec|
   spec.email         = ["byeongchan.park@sk.com"]
 
   spec.summary       = %q{JOSE for SyrupPay service's merchant}
-  spec.description   = %q{JOSE for SyrupPay service's merchant}
+  spec.description   = %q{Library for SyrupPay service's merchant.
+                        This is implemented JOSE specification, RFC 7515, 7516.
+                        support algorithm : JWE-A128KW, A256KW, A128CBC-HS256, JWS-HS256}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
@@ -27,13 +29,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.0.0"
+  spec.required_ruby_version = "~> 2.0"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
-  spec.add_runtime_dependency  "aes_key_wrap"
-  spec.add_runtime_dependency  "bindata"
-  spec.add_runtime_dependency  "activesupport"
-  spec.add_runtime_dependency  "url_safe_base64"
+  spec.add_development_dependency "rspec", "~> 3.3"
+  spec.add_runtime_dependency  "aes_key_wrap", "1.0.1"
+  spec.add_runtime_dependency  "bindata", "~> 2.1"
+  spec.add_runtime_dependency  "activesupport", "4.2.4"
+  spec.add_runtime_dependency  "url_safe_base64", "~> 0.2.2"
 end
