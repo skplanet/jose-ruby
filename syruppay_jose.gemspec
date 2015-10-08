@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["byeongchan"]
   spec.email         = ["byeongchan.park@sk.com"]
 
-  spec.summary       = %q{JWE, JWS for SyrupPay service's merchant}
-  spec.description   = %q{JWE, JWS for SyrupPay service's merchant}
+  spec.summary       = %q{JOSE for SyrupPay service's merchant}
+  spec.description   = %q{JOSE for SyrupPay service's merchant}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
