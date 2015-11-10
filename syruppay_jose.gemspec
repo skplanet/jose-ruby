@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Library for SyrupPay service's merchant.
                         This is implemented JOSE specification, RFC 7515, 7516.
                         support algorithm : JWE-A128KW, A256KW, A128CBC-HS256, JWS-HS256}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/skplanet/jose-ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
