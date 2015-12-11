@@ -16,9 +16,7 @@ $ gem install syruppay_jose
 
 ### JWE
 ```ruby
-require syruppay_jose
-
-include SyrupPay::JWE
+require 'syruppay_jose'
 
 # SyrupPay가 발급하는 secret
 key = '1234567890123456'
@@ -31,17 +29,15 @@ header = {:alg=>'A128KW', :enc=>'A128CBC-HS256', :kid=>'syruppay_sample'}
 payload = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}'
 
 # encryption and serialize
-jwe_value = compact_serialization(key, header, payload}
+jwe_token = SyrupPay::JsonEncryptionCompactSerialization.serialization(key, header, payload)
 
 # decryption and deserialize
-actual = compact_deserialization(key, jwe_value)
+actual = SyrupPay::CompactDeserialization.deserialization(key, jwe_token)
 ```
 
 ### JWS
 ```ruby
-require syruppay_jose
-
-include SyrupPay::JWS
+require 'syruppay_jose'
 
 # SyrupPay가 발급하는 secret
 key = '12345678901234561234567890123456'
@@ -53,10 +49,10 @@ header = {:alg=>'HS256', :kid=>'syruppay_sample'}
 claims = '{"iss":"syruppap_sample", "exp":1300819380, "isSample":true}' # 
 
 # sign and serialize
-jws_value = compact_serialization(key, header, claims}
+jws_value = SyrupPay::JsonSignatureCompactSerialization.serialization(key, header, claims)
 
 # verify and deserialize
-actual = compact_deserialization(key, jws_value)
+actual = SyrupPay::CompactDeserialization.deserialization(key, jws_value)
 ```
 
 ## Supported JOSE encryption algorithms
